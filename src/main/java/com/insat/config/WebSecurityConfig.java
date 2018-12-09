@@ -1,49 +1,34 @@
 package com.insat.config;
 
 
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.context.annotation.*;
-import org.springframework.security.config.annotation.authentication.builders.*;
+import org.omg.CORBA.Request;
+import org.omg.PortableServer.REQUEST_PROCESSING_POLICY_ID;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.*;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.OPTIONS;
+import static org.springframework.http.HttpMethod.POST;
 
 @EnableWebSecurity
-public class WebSecurityConfig implements WebMvcConfigurer {
-
-    @Bean
-    public UserDetailsService userDetailsService() throws Exception {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
-        return manager;
-    }
-
-
+@Configuration
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/resources/**", "/signup", "/about").permitAll()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .antMatchers("/db/**").access("hasRole('ADMIN') and hasRole('DBA')")
-                    .anyRequest().authenticated()
-                    .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .logout()
-                    .logoutUrl("/my/logout")
-                    .logoutSuccessUrl("/my/index")
-                    .invalidateHttpSession(true);
-
+                .httpBasic();
     }
 
-
-
+    @Override
+    public void configure(WebSecurity webSecurity) throws Exception {
+        webSecurity.ignoring().antMatchers(POST, "/**");
+        webSecurity.ignoring().antMatchers(GET, "/**");
+        webSecurity.ignoring().antMatchers(OPTIONS, "/**");
+    }
 }

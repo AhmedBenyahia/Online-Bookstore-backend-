@@ -11,5 +11,4 @@ public interface AuthService  {
     int EXPIRATION = 60*60*1000;
    String renewToken(String token) throws UnsupportedEncodingException;
    String login(String userName, String password) throws UnsupportedEncodingException;
-
 }

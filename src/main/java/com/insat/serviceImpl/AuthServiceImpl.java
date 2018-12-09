@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
             return "password does not match the username !!";
         } else {
             JwToken token = new JwToken(personnne,AuthService.EXPIRATION,AuthService.SECRET);
-            return  token.getToken();
+            return  "Bearer"+token.getToken();
         }
     }
 

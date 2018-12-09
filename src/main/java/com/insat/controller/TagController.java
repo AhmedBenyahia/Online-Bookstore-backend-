@@ -23,6 +23,13 @@ public class TagController {
     }
 
     @CrossOrigin(origins = "*")
+    @RequestMapping("/tags/auth")
+    public List getAllWithAuth(@RequestHeader("Authorization") String token){
+        System.out.println("sdfasdfas"+token);
+        return tagService.getAll();
+    }
+
+    @CrossOrigin(origins = "*")
     @PostMapping("/tags/add")
     public Tag add(@Valid @RequestBody Tag tag){
         return tagService.addOne(tag);

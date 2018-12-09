@@ -49,7 +49,7 @@ public class BookController {
         return bookService.getById(id);
     }
 
-//    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/books/add")
     public Book addBook(@Valid @RequestBody Book book){
         return bookService.addOne(book);

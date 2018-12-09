@@ -63,7 +63,7 @@ public class JwToken{
                 .withClaim("ville",personne.getVille())
                 .withClaim("surname",personne.getSurname())
                 .withClaim("username",personne.getUsername())
-                .withExpiresAt(new Date(this.expiration))
+                .withExpiresAt(new Date(this.expiration+System.currentTimeMillis()))
                 .sign(algorithm);
     }
 
