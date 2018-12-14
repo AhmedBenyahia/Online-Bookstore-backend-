@@ -19,4 +19,5 @@ public interface BookService {
     List<Book> getBooksByTitle(String title);
     List<Book> getBooksByAuthor(String author);
 
+    List<Book> getBooksByTag(String tag);
 }

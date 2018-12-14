@@ -9,6 +9,28 @@ import java.util.Date;
 @Table(name = "personne")
 public class Personne {
 
+    public Personne(@NotBlank String name, @NotBlank String surname,
+                    @NotBlank String username) {
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+    }
+
+    public Personne(@NotBlank String name, @NotBlank String surname, Date birthdate, @NotBlank String address, @NotBlank String cin, @NotBlank String postcode, @NotBlank String password, @NotBlank String village, @NotBlank String username, @NotBlank String role, @NotBlank String email) {
+        this.name = name;
+        this.surname = surname;
+        this.birthdate = birthdate;
+        this.address = address;
+        this.cin = cin;
+        this.postcode = postcode;
+        this.password = password;
+        this.village = village;
+        this.username = username;
+        this.role = role;
+        this.email = email;
+    }
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,48 +41,31 @@ public class Personne {
     @NotBlank
     private String surname;
 
-    private Date datebirth;
+    private Date birthdate;
 
-    @NotBlank
-    private String Adresse;
+
+    private String address;
 
     @NotBlank
     private String cin ;
 
     @NotBlank
-    private String CodePostal;
+    private String postcode;
 
     @NotBlank
     private String password;
 
     @NotBlank
-    private String ville;
+    private String village;
 
     @NotBlank
     private  String username;
 
-    @NotBlank
+
     private  String role;
 
-    public Personne(@NotBlank String name,
-                    @NotBlank String surname,
-                    Date datebirth,
-                    @NotBlank String adresse,
-                    @NotBlank String cin,
-                    @NotBlank String codePostal,
-                    @NotBlank String password,
-                    @NotBlank String ville,
-                    @NotBlank String username) {
-        this.name = name;
-        this.surname = surname;
-        this.datebirth = datebirth;
-        Adresse = adresse;
-        this.cin = cin;
-        CodePostal = codePostal;
-        this.password = password;
-        this.ville = ville;
-        this.username = username;
-    }
+    @NotBlank
+    private String  email;
 
     public Long getId() {
         return id;
@@ -86,20 +91,20 @@ public class Personne {
         this.surname = surname;
     }
 
-    public Date getDatebirth() {
-        return datebirth;
+    public Date getBirthdate() {
+        return birthdate;
     }
 
-    public void setDatebirth(Date datebirth) {
-        this.datebirth = datebirth;
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
     }
 
-    public String getAdresse() {
-        return Adresse;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdresse(String adresse) {
-        Adresse = adresse;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getCin() {
@@ -110,12 +115,12 @@ public class Personne {
         this.cin = cin;
     }
 
-    public String getCodePostal() {
-        return CodePostal;
+    public String getPostcode() {
+        return postcode;
     }
 
-    public void setCodePostal(String codePostal) {
-        CodePostal = codePostal;
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
     }
 
     public String getPassword() {
@@ -126,12 +131,12 @@ public class Personne {
         this.password = password;
     }
 
-    public String getVille() {
-        return ville;
+    public String getVillage() {
+        return village;
     }
 
-    public void setVille(String ville) {
-        this.ville = ville;
+    public void setVillage(String village) {
+        this.village = village;
     }
 
     public String getUsername() {
@@ -141,4 +146,24 @@ public class Personne {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Personne(){}
+
+
 }

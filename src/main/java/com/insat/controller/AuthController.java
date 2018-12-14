@@ -17,7 +17,9 @@ public class AuthController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/login/{username}/{password}")
-    public String login(@PathVariable String password, @PathVariable String username) throws UnsupportedEncodingException {
+    public String login(@PathVariable String password,
+                        @PathVariable String username)
+            throws UnsupportedEncodingException {
         return  authService.login(username,password);
     }
 

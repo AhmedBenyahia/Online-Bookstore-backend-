@@ -9,9 +9,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.OPTIONS;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @EnableWebSecurity
 @Configuration
@@ -30,5 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         webSecurity.ignoring().antMatchers(POST, "/**");
         webSecurity.ignoring().antMatchers(GET, "/**");
         webSecurity.ignoring().antMatchers(OPTIONS, "/**");
+        webSecurity.ignoring().antMatchers(PUT, "/**");
+        webSecurity.ignoring().antMatchers(DELETE, "/**");
     }
 }

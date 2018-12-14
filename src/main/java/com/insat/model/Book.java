@@ -24,14 +24,14 @@ public class Book {
     private Float price;
 
 //    @NotBlank
-private Integer available ;
+    private Integer available ;
 
     @NotBlank
     private String datePub;
 
     private String imgUrl;
 
-    private String category;
+    private String  tag;
 
     public Long getId() {
         return id;
@@ -97,11 +97,11 @@ private Integer available ;
         this.imgUrl = imgUrl;
     }
 
-    public String getCategory() {
-        return category;
+    public String getTag() {
+        return tag;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setTag(String tags) {
+        this.tag = tags;
     }
 }

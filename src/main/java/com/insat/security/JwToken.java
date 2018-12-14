@@ -5,6 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.insat.model.Personne;
@@ -26,31 +27,35 @@ public class JwToken{
     public static Personne validateToken(String token, String secret)
             throws UnsupportedEncodingException, JWTVerificationException
     {
-        Algorithm algorithm = Algorithm.HMAC256(secret);
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
 
 
-        JWTVerifier verifier = JWT.require(algorithm)
-                .build(); //Reusable verifier instance
-        DecodedJWT jwt = verifier.verify(token);
+            JWTVerifier verifier = JWT.require(algorithm)
+                    .build(); //Reusable verifier instance
+            DecodedJWT jwt = verifier.verify(token);
 
-        String username = jwt.getClaim("username").asString();
-        String name = jwt.getClaim("name").asString();
-        String surname = jwt.getClaim("surname").asString();
-        String cin = jwt.getClaim("cin").asString();
-        String codepostal = jwt.getClaim("codepostal").asString();
-        String ville = jwt.getClaim("ville").asString();
-        String adress = jwt.getClaim("adress").asString();
+            String username = jwt.getClaim("username").asString();
+            String name = jwt.getClaim("name").asString();
+            String surname = jwt.getClaim("surname").asString();
+            String cin = jwt.getClaim("cin").asString();
+            String codepostal = jwt.getClaim("codepostal").asString();
+            String ville = jwt.getClaim("ville").asString();
+            String adress = jwt.getClaim("adress").asString();
 
-        if(cin != null) {
-            return new Personne(name, surname, null,
-                    adress, cin, codepostal, null, ville,
-                    username);
-        } else {
+            if (cin != null) {
+                return new Personne(name, surname, username);
+            } else {
+                return null;
+            }
+        } catch(TokenExpiredException e){
+            System.out.println(" Token has expired");
             return null;
         }
     }
 
-    public JwToken(Personne personne, int expiration, String secret) throws UnsupportedEncodingException {
+    public JwToken(Personne personne, int expiration, String secret)
+            throws UnsupportedEncodingException {
         this.expiration = expiration;
         this.secret = secret;
 
@@ -58,12 +63,13 @@ public class JwToken{
         token = JWT.create()
                 .withClaim("name",personne.getName())
                 .withClaim("cin",personne.getCin())
-                .withClaim("address",personne.getAdresse())
-                .withClaim("codepostal",personne.getCodePostal())
-                .withClaim("ville",personne.getVille())
+                .withClaim("address",personne.getAddress())
+                .withClaim("codepostal",personne.getPostcode())
+                .withClaim("ville",personne.getVillage())
                 .withClaim("surname",personne.getSurname())
                 .withClaim("username",personne.getUsername())
-                .withExpiresAt(new Date(this.expiration+System.currentTimeMillis()))
+                .withExpiresAt(new Date(this.expiration+System
+                        .currentTimeMillis()))
                 .sign(algorithm);
     }
 

@@ -43,4 +43,9 @@ public class BookServiceImpl implements BookService {
     public List<Book> getBooksByAuthor(String author) {
         return bookRepository.findBooksByAuthor( author);
     }
+
+    @Override
+    public List<Book> getBooksByTag(String tag) {
+        return bookRepository.findBooksByTag(tag);
+    }
 }
