@@ -27,7 +27,7 @@ public class Book {
     private Integer available ;
 
     @NotBlank
-    private String datePub;
+    private String date;
 
     private String imgUrl;
 
@@ -81,12 +81,12 @@ public class Book {
         this.available = available;
     }
 
-    public String getDatePub() {
-        return datePub;
+    public String getDate() {
+        return date;
     }
 
-    public void setDatePub(String datePub) {
-        this.datePub = datePub;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getImgUrl() {

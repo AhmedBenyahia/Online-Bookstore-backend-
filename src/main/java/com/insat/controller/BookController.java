@@ -30,27 +30,36 @@ public class BookController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/books/{sortby}")
-    public ResponseEntity<List> getAllBooksSorted(@PathVariable String sortby,
-                            @RequestHeader("Authorization") String token)
+    public ResponseEntity<List> getAllBooksSorted(@PathVariable String sortby
+                            )
             throws UnsupportedEncodingException {
-        System.out.println("get all books"+token);
-        if(authService.isValid(token)) {
-                if (sortby.toLowerCase().equals("author")) sortby = "author";
-            else if (sortby.toLowerCase().equals("title")) sortby = "title";
-            else if (sortby.toLowerCase().equals("price")) sortby = "price";
-                else sortby = "date";
-            return new ResponseEntity<>(bookService.getAll(sortby), HttpStatus.OK);
-        } else
-            return  new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-    }
+        System.out.println("get all books \n");
 
+        switch (sortby.toLowerCase()) {
+            case "author":
+                sortby = "author";
+                break;
+            case "title":
+                sortby = "title";
+                break;
+            case "price":
+                sortby = "price";
+                break;
+            default:
+                sortby = "date";
+                break;
+        }
+        return new ResponseEntity<>(bookService.getAll(sortby), HttpStatus.OK);
+//        } else
+//            return  new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = {"/books/title/{title}"})
     public ResponseEntity<List> getBooksByTitle(
             @PathVariable(value = "title") String title,
             @RequestHeader("Authorization") String token) throws UnsupportedEncodingException {
-        System.out.println("get all books"+token);
+        System.out.println("get book with title\n");
         if(authService.isValid(token)) {
             return new ResponseEntity<>(bookService.getBooksByTitle(title),
                     HttpStatus.OK);
@@ -62,7 +71,7 @@ public class BookController {
     public ResponseEntity<List> getBooksByAuthor(@PathVariable(value = "author") String author,
                                  @RequestHeader("Authorization") String token)
             throws UnsupportedEncodingException {
-        System.out.println("get books by author"+token);
+        System.out.println("get books by author \n");
         if(authService.isValid(token)) {
             return new ResponseEntity<>(bookService.getBooksByAuthor(author),
                     HttpStatus.OK);
@@ -75,7 +84,7 @@ public class BookController {
             @PathVariable(value = "tag") String tag,
             @RequestHeader("Authorization") String token)
             throws UnsupportedEncodingException {
-        System.out.println("get books by tag"+token);
+        System.out.println("get books by tag \n");
         if(authService.isValid(token)) {
             return new ResponseEntity<>(bookService.getBooksByTag(tag),
                     HttpStatus.OK);
@@ -87,7 +96,7 @@ public class BookController {
     public ResponseEntity<Optional<Book>> getBookbyId(@PathVariable("id") Long id,
                                                       @RequestHeader("Authorization") String token)
             throws UnsupportedEncodingException {
-        System.out.println("get books by id "+token);
+        System.out.println("get books by id \n");
         if(authService.isValid(token)) {
             return new ResponseEntity<>(bookService.getById(id), HttpStatus.OK);
         }  else  return  new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -98,7 +107,7 @@ public class BookController {
     public ResponseEntity<Book> addBook(@Valid @RequestBody Book book,
                         @RequestHeader("Authorization") String token)
             throws UnsupportedEncodingException {
-        System.out.println("add a book "+token);
+        System.out.println("add a book \n");
         if(authService.isValid(token)) {
             return new ResponseEntity<>(bookService.addOne(book),HttpStatus.OK);
         } else  return  new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -109,7 +118,7 @@ public class BookController {
     public ResponseEntity deleteBook(@PathVariable ("id") Long id,
                            @RequestHeader("Authorization") String token)
             throws UnsupportedEncodingException {
-        System.out.println("delete  book "+token);
+        System.out.println("delete  book \n");
         if(authService.isValid(token)) {
             bookService.deleteById(id);
            return new ResponseEntity<>(HttpStatus.OK);

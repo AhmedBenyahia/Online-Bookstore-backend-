@@ -10,6 +10,7 @@ import com.insat.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NonUniqueResultException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
@@ -21,17 +22,20 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String login(String username, String password) throws UnsupportedEncodingException {
-        Personne personne = personneRepository.findPersonneByUsername(username);
-//        Personne personne = new Personne("slay","surname",new Date("12/06/1997"),
-//                    "djerbaAjim","13462457","4135","154758168",
-//                "ajim","sayto");
-        if (personne == null) {
-            return "username not exist !!";
-        }else if(!password.equals(personne.getPassword())){
-            return "password does not match the username !!";
-        } else {
-            JwToken token = new JwToken(personne,AuthService.EXPIRATION,AuthService.SECRET);
-            return  "Bearer"+token.getToken();
+        try {
+            Personne personne = personneRepository.findPersonneByUsername(username);
+
+            if (personne == null) {
+                return "username not exist !!";
+            }else if(!password.equals(personne.getPassword())){
+                return "password does not match the username !!";
+            } else {
+                JwToken token = new JwToken(personne,AuthService.EXPIRATION,AuthService.SECRET);
+                return  "Bearer"+token.getToken();
+            }
+        }catch( NonUniqueResultException e ){
+            return "there is a problem in the database\n" +
+                    "username is not unique\n";
         }
     }
 
@@ -39,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
     public boolean isValid(String token) {
         try {
 
-            System.out.println(" trying to validate token");
+//            System.out.println(" token is valid");
             return  JwToken.validateToken(token,AuthService.SECRET) != null;
         }catch( TokenExpiredException e2){
             System.out.println(" Token has expired");

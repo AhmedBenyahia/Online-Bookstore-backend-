@@ -2,11 +2,12 @@ package com.insat.model;
 
 import net.bytebuddy.implementation.bind.annotation.Default;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+
+@Entity
+@Table(name = "order")
 public class Order {
 
 
