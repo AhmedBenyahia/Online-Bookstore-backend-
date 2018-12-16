@@ -1,15 +1,14 @@
 package com.insat.service;
 
-import com.insat.model.Personne;
+import com.insat.model.Person;
 
-import java.util.Date;
 import java.util.Optional;
 
 public interface PersonneService {
 
-    Personne addOne(Personne personne);
+    Person addOne(Person person);
     void deleteById(Long id);
-    Optional<Personne> getById(Long id);
+    Optional<Person> getById(Long id);
 }
 
 

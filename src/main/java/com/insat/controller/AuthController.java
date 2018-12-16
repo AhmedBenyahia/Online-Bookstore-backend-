@@ -3,6 +3,8 @@ package com.insat.controller;
 
 import com.insat.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,11 +18,11 @@ public class AuthController {
     AuthService authService;
 
     @CrossOrigin(origins = "*")
-    @GetMapping("/login/{username}/{password}")
-    public String login(@PathVariable String password,
-                        @PathVariable String username)
-            throws UnsupportedEncodingException {
-        return  authService.login(username,password);
+    @PostMapping("/login/{username}/")
+    public ResponseEntity<String> login(@PathVariable String username,
+                                        @RequestBody String password) throws UnsupportedEncodingException {
+        System.out.println("login: "+username);
+        return  new ResponseEntity<>(authService.login(username,password), HttpStatus.OK);
     }
 
     @CrossOrigin(origins = "*")

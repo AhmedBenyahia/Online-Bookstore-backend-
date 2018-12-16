@@ -30,9 +30,7 @@ public class BookController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/books/{sortby}")
-    public ResponseEntity<List> getAllBooksSorted(@PathVariable String sortby
-                            )
-            throws UnsupportedEncodingException {
+    public ResponseEntity<List> getAllBooksSorted(@PathVariable String sortby){
         System.out.println("get all books \n");
 
         switch (sortby.toLowerCase()) {
@@ -50,96 +48,72 @@ public class BookController {
                 break;
         }
         return new ResponseEntity<>(bookService.getAll(sortby), HttpStatus.OK);
-//        } else
-//            return  new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = {"/books/title/{title}"})
-    public ResponseEntity<List> getBooksByTitle(
-            @PathVariable(value = "title") String title,
-            @RequestHeader("Authorization") String token) throws UnsupportedEncodingException {
+    public ResponseEntity<List> getBooksByTitle( @PathVariable(value = "title") String title) {
+
         System.out.println("get book with title\n");
-        if(authService.isValid(token)) {
-            return new ResponseEntity<>(bookService.getBooksByTitle(title),
-                    HttpStatus.OK);
-        } else  return  new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(
+                    bookService.getBooksByTitle(title),
+                    HttpStatus.OK
+            );
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = {"/books/author/{author}"})
-    public ResponseEntity<List> getBooksByAuthor(@PathVariable(value = "author") String author,
-                                 @RequestHeader("Authorization") String token)
-            throws UnsupportedEncodingException {
-        System.out.println("get books by author \n");
-        if(authService.isValid(token)) {
+    public ResponseEntity<List> getBooksByAuthor(@PathVariable(value = "author") String author) {
+
+            System.out.println("get books by author \n");
             return new ResponseEntity<>(bookService.getBooksByAuthor(author),
                     HttpStatus.OK);
-        }  else  return  new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = {"/books/tag/{tag}"})
-    public ResponseEntity<List> getBooksByTag(
-            @PathVariable(value = "tag") String tag,
-            @RequestHeader("Authorization") String token)
-            throws UnsupportedEncodingException {
-        System.out.println("get books by tag \n");
-        if(authService.isValid(token)) {
+    public ResponseEntity<List> getBooksByTag( @PathVariable(value = "tag") String tag) {
+
+            System.out.println("get books by tag \n");
             return new ResponseEntity<>(bookService.getBooksByTag(tag),
                     HttpStatus.OK);
-        }  else  return  new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
     
     @CrossOrigin(origins = "*")
     @GetMapping("/books/id/{id}")
-    public ResponseEntity<Optional<Book>> getBookbyId(@PathVariable("id") Long id,
-                                                      @RequestHeader("Authorization") String token)
-            throws UnsupportedEncodingException {
-        System.out.println("get books by id \n");
-        if(authService.isValid(token)) {
+    public ResponseEntity<Optional<Book>> getBookbyId(@PathVariable("id") Long id) {
+
+            System.out.println("get books by id \n");
             return new ResponseEntity<>(bookService.getById(id), HttpStatus.OK);
-        }  else  return  new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @CrossOrigin(origins = "*")
     @PostMapping("/books/add")
-    public ResponseEntity<Book> addBook(@Valid @RequestBody Book book,
-                        @RequestHeader("Authorization") String token)
-            throws UnsupportedEncodingException {
-        System.out.println("add a book \n");
-        if(authService.isValid(token)) {
+    public ResponseEntity<Book> addBook(@Valid @RequestBody Book book) {
+
+            System.out.println("add a book \n");
             return new ResponseEntity<>(bookService.addOne(book),HttpStatus.OK);
-        } else  return  new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @CrossOrigin(origins = "*")
     @DeleteMapping("/books/delete/{id}")
-    public ResponseEntity deleteBook(@PathVariable ("id") Long id,
-                           @RequestHeader("Authorization") String token)
-            throws UnsupportedEncodingException {
-        System.out.println("delete  book \n");
-        if(authService.isValid(token)) {
+    public ResponseEntity deleteBook(@PathVariable ("id") Long id) {
+
+            System.out.println("delete  book \n");
             bookService.deleteById(id);
-           return new ResponseEntity<>(HttpStatus.OK);
-        } else  return  new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @CrossOrigin(origins = "*")
     @PutMapping("/books/update")
-    public ResponseEntity<Book> updateBook(
-            @RequestBody Book newBook,
-            @RequestHeader("Authorization") String token)
-                 throws UnsupportedEncodingException {
-        System.out.println("update book \n -> " + token);
-        if (authService.isValid(token)) {
-            Optional<Book> oldBook = getBookbyId(newBook.getId(),token).getBody();
+    public ResponseEntity<Book> updateBook( @RequestBody Book newBook)  {
+            System.out.println("update book \n");
+            Optional<Book> oldBook = getBookbyId(newBook.getId()).getBody();
             if (oldBook.isPresent()) {
-                return new ResponseEntity<Book>(addBook(newBook,token).getBody(), HttpStatus.OK);
+                return new ResponseEntity<>(addBook(newBook).getBody(), HttpStatus.OK);
             } else {
-                return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-        } return  new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
 }

@@ -4,12 +4,10 @@ package com.insat.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.insat.model.Personne;
-import com.insat.service.AuthService;
+import com.insat.model.Person;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -24,7 +22,7 @@ public class JwToken{
     private String token;
 
 
-    public static Personne validateToken(String token, String secret)
+    public static Person validateToken(String token, String secret)
             throws UnsupportedEncodingException, JWTVerificationException
     {
         try {
@@ -44,30 +42,29 @@ public class JwToken{
             String adress = jwt.getClaim("adress").asString();
 
             if (cin != null) {
-                return new Personne(name, surname, username);
+                return new Person(name, surname, username);
             } else {
                 return null;
             }
-        } catch(TokenExpiredException e){
-            System.out.println(" Token has expired");
-            return null;
+        } catch(JWTDecodeException e){
+           throw new UnsupportedEncodingException() ;
         }
     }
 
-    public JwToken(Personne personne, int expiration, String secret)
+    public JwToken(Person person, int expiration, String secret)
             throws UnsupportedEncodingException {
         this.expiration = expiration;
         this.secret = secret;
 
         Algorithm algorithm = Algorithm.HMAC256(this.secret);
         token = JWT.create()
-                .withClaim("name",personne.getName())
-                .withClaim("cin",personne.getCin())
-                .withClaim("address",personne.getAddress())
-                .withClaim("codepostal",personne.getPostcode())
-                .withClaim("ville",personne.getVillage())
-                .withClaim("surname",personne.getSurname())
-                .withClaim("username",personne.getUsername())
+                .withClaim("name", person.getName())
+                .withClaim("cin", person.getCin())
+                .withClaim("address", person.getAddress())
+                .withClaim("codepostal", person.getPostcode())
+                .withClaim("ville", person.getVillage())
+                .withClaim("surname", person.getSurname())
+                .withClaim("username", person.getUsername())
                 .withExpiresAt(new Date(this.expiration+System
                         .currentTimeMillis()))
                 .sign(algorithm);

@@ -7,37 +7,38 @@ import javax.validation.constraints.NotBlank;
 
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order {
 
 
     @Id
-    @GeneratedValue(  strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
     private Integer amount ;
 
     @NotBlank
-    private Long bookId;
+    private Integer bookId;
 
-    private boolean validation;
+    private boolean confirmation;
+
+    @NotBlank
+    private String fullAddress;
+
+    @NotBlank
+    private String telephoneNumber;
 
 
-    public Order() {}
 
     public Order(@NotBlank Integer amount,
-                 @NotBlank Long bookId) {
+                 @NotBlank Integer bookId,
+                 @NotBlank String fullAddress,
+                 @NotBlank String telephoneNumber) {
         this.amount = amount;
         this.bookId = bookId;
-    }
-
-    public boolean isValidation() {
-        return validation;
-    }
-
-    public void setValidation(boolean validation) {
-        this.validation = validation;
+        this.fullAddress = fullAddress;
+        this.telephoneNumber = telephoneNumber;
     }
 
     public Long getId() {
@@ -56,11 +57,35 @@ public class Order {
         this.amount = amount;
     }
 
-    public Long getBookId() {
+    public Integer getBookId() {
         return bookId;
     }
 
-    public void setBookId(Long bookId) {
+    public void setBookId(Integer bookId) {
         this.bookId = bookId;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    public String getFullAddress() {
+        return fullAddress;
+    }
+
+    public void setFullAddress(String fullAddress) {
+        this.fullAddress = fullAddress;
+    }
+
+    public boolean isConfirmation() {
+        return confirmation;
+    }
+
+    public void setConfirmation(boolean confirmation) {
+        this.confirmation = confirmation;
     }
 }

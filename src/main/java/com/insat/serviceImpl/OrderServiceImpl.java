@@ -19,12 +19,11 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
     }
 
-    @Override
-    public Order validateOrder(Long id) {
+    public Order confirmOrder(Long id) {
 
         Optional<Order> order = orderRepository.findById(id);
         if( order.isPresent()){
-            order.get().setValidation(true);
+            order.get().setConfirmation(true);
             orderRepository.save(order.get());
             return  order.get();
         } else {

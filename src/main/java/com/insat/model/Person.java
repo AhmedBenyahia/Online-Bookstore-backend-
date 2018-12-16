@@ -8,17 +8,17 @@ import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
-@Table(name = "personne")
-public class Personne {
+@Table(name = "person")
+public class Person {
 
-    public Personne(@NotBlank String name, @NotBlank String surname,
-                    @NotBlank String username) {
+    public Person(@NotBlank String name, @NotBlank String surname,
+                  @NotBlank String username) {
         this.name = name;
         this.surname = surname;
         this.username = username;
     }
 
-    public Personne(@NotBlank String name, @NotBlank String surname, Date birthdate, @NotBlank String address, @NotBlank String cin, @NotBlank String postcode, @NotBlank String password, @NotBlank String village, @NotBlank String username, @NotBlank String role, @NotBlank String email) {
+    public Person(@NotBlank String name, @NotBlank String surname, Date birthdate, @NotBlank String address, @NotBlank String cin, @NotBlank String postcode, @NotBlank String password, @NotBlank String village, @NotBlank String username, @NotBlank String role, @NotBlank String email) {
         this.name = name;
         this.surname = surname;
         this.birthdate = birthdate;
@@ -61,7 +61,6 @@ public class Personne {
     private String village;
 
     @NotBlank
-    @UniqueElements
     private  String username;
 
 
@@ -166,7 +165,7 @@ public class Personne {
         this.email = email;
     }
 
-    public Personne(){}
+    public Person(){}
 
 
 }

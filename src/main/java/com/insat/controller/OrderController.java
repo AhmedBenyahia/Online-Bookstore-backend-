@@ -24,8 +24,8 @@ public class OrderController {
 
     @GetMapping("/valid/{id}")
     public ResponseEntity<Order> validateOrder(@PathVariable Long id) {
-        if (orderService.validateOrder(id) != null) {
-            return new ResponseEntity<>(orderService.validateOrder(id), HttpStatus.OK);
+        if (orderService.confirmOrder(id) != null) {
+            return new ResponseEntity<>(orderService.confirmOrder(id), HttpStatus.OK);
         } else  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

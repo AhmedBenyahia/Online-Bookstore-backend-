@@ -23,7 +23,7 @@ public class TagController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/tags/")
-    public List getAllWithAuth(@RequestHeader("Authorization") String token){
+    public List getAllWithAuth(){
         System.out.println("get tags\n");
 
         return tagService.getAll();
@@ -31,13 +31,8 @@ public class TagController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/tags/add")
-    public Tag add(@Valid @RequestBody Tag tag,
-                   @RequestHeader("Authorization") String token)
-            throws UnsupportedEncodingException {
+    public Tag add(@Valid @RequestBody Tag tag) {
         System.out.println("add tags\n");
-        if(authService.isValid(token))
             return tagService.addOne(tag);
-        else
-            return null;
     }
 }

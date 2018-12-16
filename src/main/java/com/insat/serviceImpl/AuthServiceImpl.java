@@ -1,36 +1,37 @@
 package com.insat.serviceImpl;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.insat.model.Personne;
-import com.insat.repository.PersonneRepository;
+import com.insat.model.Person;
+import com.insat.repository.PersonRepository;
 import com.insat.security.JwToken;
 import com.insat.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NonUniqueResultException;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    PersonneRepository personneRepository;
+    PersonRepository personRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public String login(String username, String password) throws UnsupportedEncodingException {
         try {
-            Personne personne = personneRepository.findPersonneByUsername(username);
-
-            if (personne == null) {
+            Person person = personRepository.findPersonByUsername(username);
+            if (person == null) {
                 return "username not exist !!";
-            }else if(!password.equals(personne.getPassword())){
+            }else if(!passwordEncoder.matches(password,person.getPassword())) {
                 return "password does not match the username !!";
             } else {
-                JwToken token = new JwToken(personne,AuthService.EXPIRATION,AuthService.SECRET);
+                JwToken token = new JwToken(person,AuthService.EXPIRATION,AuthService.SECRET);
                 return  "Bearer"+token.getToken();
             }
         }catch( NonUniqueResultException e ){
@@ -56,18 +57,19 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String role(String token) throws UnsupportedEncodingException {
-        Personne personne = JwToken.validateToken(token,AuthService.SECRET);
-
-        return personneRepository.findPersonneByUsername(personne.getUsername()).getRole() ;
+    public  boolean isAdmin(String username) {
+        return personRepository.findPersonByUsername(username)
+                .getRole()
+                .toLowerCase()
+                .equals("admin");
     }
 
 
     @Override
     public String renewToken(String token) throws UnsupportedEncodingException {
-        Personne valid = JwToken.validateToken(token,AuthService.SECRET);
-        if(valid != null){
-            JwToken tok = new JwToken(valid,AuthService.EXPIRATION,AuthService.SECRET);
+        Person person = JwToken.validateToken(token,AuthService.SECRET);
+        if(person != null && personRepository.findPersonByUsername(person.getUsername()) != null){
+            JwToken tok = new JwToken(person,AuthService.EXPIRATION,AuthService.SECRET);
             return  "Bearer"+tok.getToken();
         }
         return null;
