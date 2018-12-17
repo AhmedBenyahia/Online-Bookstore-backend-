@@ -58,7 +58,7 @@ public class PersonController {
 
     @CrossOrigin(origins = "*")
     @PutMapping("/update")
-    public ResponseEntity<Person> updateBook(
+    public ResponseEntity<Person> updatePerson(
             @RequestBody Person newPerson,
             @RequestAttribute ("username") String username) {
         System.out.println("update person \n -> ");

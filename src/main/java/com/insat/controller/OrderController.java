@@ -1,6 +1,7 @@
 package com.insat.controller;
 
 
+import com.insat.model.CartItem;
 import com.insat.model.Order;
 import com.insat.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class OrderController {
 
     @PostMapping("/new")
     public  ResponseEntity<Order> addOrder(@Valid @RequestBody Order order) {
-        return new ResponseEntity<>(orderService.addOrder(order),HttpStatus.OK);
+        return new ResponseEntity<>(orderService.createOrder(order),HttpStatus.OK);
     }
 
     @GetMapping("/valid/{id}")
@@ -27,5 +28,10 @@ public class OrderController {
         if (orderService.confirmOrder(id) != null) {
             return new ResponseEntity<>(orderService.confirmOrder(id), HttpStatus.OK);
         } else  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/cart/add")
+    public ResponseEntity<CartItem> addItemToCart(@Valid @RequestBody CartItem cartItem){
+        return new ResponseEntity<>(orderService.addItemToCart(cartItem),HttpStatus.OK);
     }
 }

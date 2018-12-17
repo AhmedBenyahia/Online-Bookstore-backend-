@@ -1,27 +1,24 @@
 package com.insat.model;
 
-import net.bytebuddy.implementation.bind.annotation.Default;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
 @Table(name = "orders")
 public class Order {
 
+    static Integer DELIVERED = 2;
+    static Integer INPROGRESS = 1;
+    static Integer NOTCONFIRMED = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    private Integer amount ;
-
-    @NotBlank
-    private Integer bookId;
-
-    private boolean confirmation;
+    private Integer status;
 
     @NotBlank
     private String fullAddress;
@@ -29,17 +26,23 @@ public class Order {
     @NotBlank
     private String telephoneNumber;
 
+    private Float totalCost ;
+
+    @OneToMany(mappedBy = "order")
+    private List<CartItem> cartItemList ;
 
 
-    public Order(@NotBlank Integer amount,
-                 @NotBlank Integer bookId,
-                 @NotBlank String fullAddress,
+    public Order(@NotBlank String fullAddress,
                  @NotBlank String telephoneNumber) {
-        this.amount = amount;
-        this.bookId = bookId;
         this.fullAddress = fullAddress;
         this.telephoneNumber = telephoneNumber;
+        this.totalCost = (float) 0;
     }
+
+    public void deleteItemsFromCart(CartItem item) {
+        cartItemList.remove(item);
+    }
+
 
     public Long getId() {
         return id;
@@ -47,22 +50,6 @@ public class Order {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
-    public Integer getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Integer bookId) {
-        this.bookId = bookId;
     }
 
     public String getTelephoneNumber() {
@@ -81,11 +68,22 @@ public class Order {
         this.fullAddress = fullAddress;
     }
 
-    public boolean isConfirmation() {
-        return confirmation;
+
+
+    public List<CartItem> getCartItemList() {
+        return cartItemList;
     }
 
-    public void setConfirmation(boolean confirmation) {
-        this.confirmation = confirmation;
+    public void addCartItem(CartItem cartItem) {
+        this.cartItemList.add(cartItem) ;
+        this.totalCost += cartItem.getPrice();
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
