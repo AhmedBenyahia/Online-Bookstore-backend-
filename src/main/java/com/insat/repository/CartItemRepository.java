@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem,Long> {
     List<CartItem> findCartItemsByOrder(Order order);
-    CartItem findCartItemByBookid(Long book_id);
+    CartItem findCartItemByBookidAndOrder(Long bookid, Order order);
 }

@@ -1,5 +1,7 @@
 package com.insat.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     private Long id;
 
     private Integer status = 0;
@@ -26,7 +29,7 @@ public class Order {
     @NotBlank
     private String telephoneNumber;
 
-    private Float totalCost ;
+    private  Float totalCost = (float) 0  ;
 
     @ManyToOne
     @JoinColumn(name="client_id")
@@ -41,12 +44,9 @@ public class Order {
                  @NotBlank String telephoneNumber) {
         this.fullAddress = fullAddress;
         this.telephoneNumber = telephoneNumber;
-        this.totalCost = (float) 0;
     }
 
-    public void deleteItemsFromCart(CartItem item) {
-        cartItemList.remove(item);
-    }
+
 
 
     public Long getId() {
@@ -79,10 +79,6 @@ public class Order {
         return cartItemList;
     }
 
-    public void addCartItem(CartItem cartItem) {
-        this.cartItemList.add(cartItem) ;
-        this.totalCost += cartItem.getPrice();
-    }
 
     public Integer getStatus() {
         return status;
@@ -90,5 +86,22 @@ public class Order {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Float getTotalCost() {
+        return totalCost;
+    }
+
+    public void updateTotalCost(Float totalCost) {
+        this.totalCost += totalCost;
+    }
+
+    @JsonIgnore
+    public Person getClient() {
+        return client;
+    }
+
+    public void setClient(Person client) {
+        this.client = client;
     }
 }

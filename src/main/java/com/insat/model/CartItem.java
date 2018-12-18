@@ -1,5 +1,7 @@
 package com.insat.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.annotation.Generated;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -37,7 +39,9 @@ public class CartItem {
         return price;
     }
 
-
+    public void setPrice(Float price) {
+        this.price = price;
+    }
 
     public Long getQuantity() {
         return quantity;
@@ -47,14 +51,15 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public Long getBook_id() {
+    public Long getBookid() {
         return bookid;
     }
 
-    public void setBook_id(Long bookid) {
+    public void setBookid(Long bookid) {
         this.bookid = bookid;
     }
 
+    @JsonIgnore
     public Order getOrder() {
         return order;
     }
