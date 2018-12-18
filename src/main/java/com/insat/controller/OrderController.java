@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping ("/order")
@@ -34,4 +35,16 @@ public class OrderController {
     public ResponseEntity<CartItem> addItemToCart(@Valid @RequestBody CartItem cartItem){
         return new ResponseEntity<>(orderService.addItemToCart(cartItem),HttpStatus.OK);
     }
+
+    @GetMapping("/cart/{id}")
+     public ResponseEntity<List<CartItem>> getOrderItems(@PathVariable Long id) {
+        return  new ResponseEntity<>(orderService.getOrderCartItems(id),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/cart/delete/{id_order}/{id_book}")
+    public void deleteItemFromCart(@PathVariable Long id_order,
+                                   @PathVariable Long id_book){
+        orderService.deleteItemFromCart(id_order,id_book);
+    }
+
 }

@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "person")
@@ -68,6 +69,9 @@ public class Person {
 
     @NotBlank
     private String  email;
+
+    @OneToMany(mappedBy="client")
+    private List<Order> orderList;
 
     public Long getId() {
         return id;

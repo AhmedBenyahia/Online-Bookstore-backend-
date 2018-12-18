@@ -11,33 +11,33 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @NotBlank
-    private Long book_id;
 
-    @NotBlank
+    private Long bookid;
+
+
     private Long quantity ;
 
-    @NotBlank
-    private Float price;
+
+    private  Float price;
 
     @ManyToOne
     @JoinColumn(name="order_id")
     private Order order;
 
-    public CartItem(@NotBlank Long book_id, @NotBlank Long quantity, @NotBlank Float price, Order order) {
-        this.book_id = book_id;
+    public  CartItem(){}
+    public CartItem(@NotBlank Long bookid, @NotBlank Long quantity, @NotBlank Float price, Order order) {
+        this.bookid = bookid;
         this.quantity = quantity;
-        this.price = price;
+        this.price = price * quantity;
         this.order = order;
+
     }
 
     public Float getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
-        this.price = price;
-    }
+
 
     public Long getQuantity() {
         return quantity;
@@ -48,11 +48,11 @@ public class CartItem {
     }
 
     public Long getBook_id() {
-        return book_id;
+        return bookid;
     }
 
-    public void setBook_id(Long book_id) {
-        this.book_id = book_id;
+    public void setBook_id(Long bookid) {
+        this.bookid = bookid;
     }
 
     public Order getOrder() {

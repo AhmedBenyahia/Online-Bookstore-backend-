@@ -2,9 +2,11 @@ package com.insat.serviceImpl;
 
 import com.insat.model.CartItem;
 import com.insat.model.Order;
+import com.insat.model.Person;
 import com.insat.repository.CartItemRepository;
 import com.insat.repository.OrderRepository;
 import com.insat.service.OrderService;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(Order order) {
-        return orderRepository.save(order);
+            return orderRepository.save(order);
     }
 
     @Override
@@ -41,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     public void deleteItemFromCart(Long id_order, Long id_book) {
         orderRepository.findById(id_order).get()
                 .deleteItemsFromCart(
-                        cartItemRepository.findCartItemByBook_id(id_book)
+                        cartItemRepository.findCartItemByBookid(id_book)
                 );
     }
 
@@ -49,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
 
         Optional<Order> order = orderRepository.findById(id);
         if( order.isPresent()){
-            order.get().setConfirmation(true);
+            order.get().setStatus(Order.INPROGRESS);
             orderRepository.save(order.get());
             return  order.get();
         } else {

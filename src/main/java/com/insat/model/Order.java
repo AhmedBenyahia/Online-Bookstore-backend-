@@ -10,15 +10,15 @@ import java.util.List;
 @Table(name = "orders")
 public class Order {
 
-    static Integer DELIVERED = 2;
-    static Integer INPROGRESS = 1;
-    static Integer NOTCONFIRMED = 0;
+    public static Integer DELIVERED = 2;
+    public static Integer INPROGRESS = 1;
+    public static Integer NOTCONFIRMED = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer status;
+    private Integer status = 0;
 
     @NotBlank
     private String fullAddress;
@@ -28,9 +28,14 @@ public class Order {
 
     private Float totalCost ;
 
+    @ManyToOne
+    @JoinColumn(name="client_id")
+    private Person client;
+
     @OneToMany(mappedBy = "order")
     private List<CartItem> cartItemList ;
 
+    public Order(){}
 
     public Order(@NotBlank String fullAddress,
                  @NotBlank String telephoneNumber) {
