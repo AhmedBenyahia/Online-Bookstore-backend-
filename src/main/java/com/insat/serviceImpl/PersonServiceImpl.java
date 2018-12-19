@@ -43,4 +43,9 @@ public class PersonServiceImpl implements PersonneService {
     public Optional<Person> getById(Long id) {
         return personRepository.findById(id);
     }
+
+    @Override
+    public Person getByUsername(String username) {
+        return personRepository.findPersonByUsername(username);
+    }
 }

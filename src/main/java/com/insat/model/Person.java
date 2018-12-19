@@ -70,6 +70,16 @@ public class Person {
     @NotBlank
     private String  email;
 
+    private String telephoneNumber;
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
     @OneToMany(mappedBy="client")
     private List<Order> orderList;
 

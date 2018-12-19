@@ -23,9 +23,12 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         String token = request.getHeader("Authorization");
         System.out.println (request.getMethod());
         System.out.println("Authorization:" + token + ": redirect->");
-//            request.removeAttribute("Authorization");
         if(request.getMethod().equals("OPTIONS")){
             return true;
+        }
+        if(token == null ){
+            response.sendError(401);
+            return false;
         }
         try {
                 Person person = JwToken.validateToken(token,AuthService.SECRET);

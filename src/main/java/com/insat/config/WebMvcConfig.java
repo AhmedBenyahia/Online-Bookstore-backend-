@@ -17,7 +17,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         .addPathPatterns("/api/**",
                 "/order/**",
                 "/person/delete/**",
-                "/person/id/**")
+                "/person/id/**",
+                "/person/info/**")
         ;
     }
 }

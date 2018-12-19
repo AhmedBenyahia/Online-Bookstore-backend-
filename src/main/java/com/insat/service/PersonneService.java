@@ -9,6 +9,7 @@ public interface PersonneService {
     Person addOne(Person person);
     void deleteById(Long id);
     Optional<Person> getById(Long id);
+    Person getByUsername(String username);
 }
 
 

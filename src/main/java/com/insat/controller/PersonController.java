@@ -1,6 +1,7 @@
 package com.insat.controller;
 
 
+import com.insat.model.Order;
 import com.insat.model.Person;
 import com.insat.service.AuthService;
 import com.insat.service.PersonneService;
@@ -70,5 +71,13 @@ public class PersonController {
                 return new ResponseEntity<Person>(HttpStatus.NOT_FOUND);
             }
        } else return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-}
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/info/{username}")
+    public ResponseEntity<Person> getPersonInfo(@PathVariable String username) {
+        Person person = personneService.getByUsername(username);
+        if (person == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return  new ResponseEntity<>(person,HttpStatus.OK);
+    }
 }
