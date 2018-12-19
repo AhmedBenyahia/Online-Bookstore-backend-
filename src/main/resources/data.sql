@@ -4,4 +4,5 @@ insert into `person` values  (2,'user address','2018-12-16','00000000','user@gma
 insert into tag value(1,"cat1");
 insert into tag value(2,"cat2");
 insert into tag value(3,"cat3");
-
+-- username: sayto, oassword: passwd, role: Admin
+-- username: slay, oassword: passwd, role:  user
